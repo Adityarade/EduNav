@@ -1,0 +1,10 @@
+﻿node_modules/
+dist-electron/
+.env
+dist/
+*.exe
+*.dll
+*.pak
+*.dat
+*.bin
+*.asar

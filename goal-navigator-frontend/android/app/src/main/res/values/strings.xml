@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">GoalNavigator</string>
+    <string name="title_activity_main">GoalNavigator</string>
+    <string name="package_name">com.goalnavigator.app</string>
+    <string name="custom_url_scheme">com.goalnavigator.app</string>
+</resources>

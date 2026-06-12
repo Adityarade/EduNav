@@ -1,0 +1,78 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id          String       @id @default(uuid())
+  email       String?      @unique
+  mobile      String?      @unique
+  googleId    String?      @unique
+  name        String?
+  password    String?
+  bio         String?
+  targetRole  String?
+  skills      String?
+  profilePic  String?      // Base64 encoded string
+  goals         Goal[]
+  assessments   Assessment[]
+  studySessions StudySession[]
+  studyNotes    StudyNote[]
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+}
+
+model Assessment {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  interests String
+  strengths String
+  aiSummary String?
+  createdAt DateTime @default(now())
+}
+
+model Goal {
+  id          String       @id @default(uuid())
+  userId      String
+  user        User         @relation(fields: [userId], references: [id])
+  title       String
+  description String?
+  category    String       // e.g., 'short-term', 'medium-term', 'long-term'
+  status      String       @default("pending")
+  actionPlans ActionPlan[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model ActionPlan {
+  id        String   @id @default(uuid())
+  goalId    String
+  goal      Goal     @relation(fields: [goalId], references: [id])
+  steps     String   // JSON string of steps
+  resources String   // JSON string of resources
+  createdAt DateTime @default(now())
+}
+
+model StudySession {
+  id              String   @id @default(uuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id])
+  durationMinutes Int
+  createdAt       DateTime @default(now())
+}
+
+model StudyNote {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  title     String
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
