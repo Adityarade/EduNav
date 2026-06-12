@@ -122,3 +122,9 @@ If you want to modify the code:
    # OR
    npm run dist     # Build Electron App
    ```
+
+---
+
+<div align="center">
+  <b>Made with ❤️ by Aditya</b>
+</div>
