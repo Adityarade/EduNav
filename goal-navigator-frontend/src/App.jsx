@@ -1,4 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import 
+const API_BASE = import.meta.env.VITE_API_URL || `${API_BASE}`;
+
+React, { useState, useEffect } from 'react';
 import { Mail, Phone, Lock, ChevronRight, Activity, Target, BookOpen, Settings, LogOut, CheckCircle2, Circle, ArrowRight, MessageSquare, Send, X, Compass, Award, Flame, Search, Loader2, Star, HelpCircle, TrendingUp, Sparkles, Zap, Globe, Shield, Heart, User, Camera, Timer, PenSquare, BrainCircuit, Download } from 'lucide-react';
 
 function App() {
@@ -94,7 +97,7 @@ function App() {
   // Fetch goals from backend on load
   const fetchGoals = async () => {
     try {
-      const res = await fetch('http://localhost:3000/api/goals');
+      const res = await fetch(`${API_BASE}/api/goals`);
       if (res.ok) {
         const data = await res.json();
         const formatted = data.map(g => {
@@ -121,7 +124,7 @@ function App() {
   // Fetch profile from backend on load
   const fetchProfile = async () => {
     try {
-      const res = await fetch('http://localhost:3000/api/profile');
+      const res = await fetch(`${API_BASE}/api/profile`);
       if (res.ok) {
         const data = await res.json();
         if (data) {
@@ -144,7 +147,7 @@ function App() {
     e.preventDefault();
     setIsSavingProfile(true);
     try {
-      const res = await fetch('http://localhost:3000/api/profile', {
+      const res = await fetch(`${API_BASE}/api/profile`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -188,7 +191,7 @@ function App() {
   // --- NEW FETCH HELPER FUNCTIONS ---
   const fetchNotes = async () => {
     try {
-      const res = await fetch('http://localhost:3000/api/notes');
+      const res = await fetch(`${API_BASE}/api/notes`);
       if (res.ok) {
         const data = await res.json();
         setNotes(data);
@@ -208,7 +211,7 @@ function App() {
 
   const fetchStudySessions = async () => {
     try {
-      const res = await fetch('http://localhost:3000/api/study-sessions');
+      const res = await fetch(`${API_BASE}/api/study-sessions`);
       if (res.ok) {
         const data = await res.json();
         setStudySessions(data);
@@ -221,7 +224,7 @@ function App() {
   const fetchCoachReport = async () => {
     setIsLoadingCoachReport(true);
     try {
-      const res = await fetch('http://localhost:3000/api/ai-coach-report');
+      const res = await fetch(`${API_BASE}/api/ai-coach-report`);
       if (res.ok) {
         const data = await res.json();
         setCoachReport(data);
@@ -239,7 +242,7 @@ function App() {
     if (pomodoroMode === 'focus') {
       alert("🎉 Focus session completed! Logging session...");
       try {
-        const res = await fetch('http://localhost:3000/api/study-sessions', {
+        const res = await fetch(`${API_BASE}/api/study-sessions`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ durationMinutes: 25 })
@@ -267,7 +270,7 @@ function App() {
     setIsAnalyzingGap(true);
     setGapResult(null);
     try {
-      const res = await fetch('http://localhost:3000/api/analyze-gap', {
+      const res = await fetch(`${API_BASE}/api/analyze-gap`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ jobDescription: gapJobDescription })
@@ -287,7 +290,7 @@ function App() {
     if (!gapResult?.gapRoadmap) return;
     setIsSavingGapRoadmap(true);
     try {
-      const res = await fetch('http://localhost:3000/api/generate-roadmap', {
+      const res = await fetch(`${API_BASE}/api/generate-roadmap`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -320,7 +323,7 @@ function App() {
 
   const handleCreateNote = async () => {
     try {
-      const res = await fetch('http://localhost:3000/api/notes', {
+      const res = await fetch(`${API_BASE}/api/notes`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title: 'Untitled Note', content: '' })
@@ -339,7 +342,7 @@ function App() {
     if (!activeNoteId) return;
     setIsSavingNote(true);
     try {
-      const res = await fetch('http://localhost:3000/api/notes', {
+      const res = await fetch(`${API_BASE}/api/notes`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: activeNoteId, title: noteTitle, content: noteContent })
@@ -358,7 +361,7 @@ function App() {
   const handleDeleteNote = async (id) => {
     if (!confirm("Are you sure you want to delete this note?")) return;
     try {
-      const res = await fetch(`http://localhost:3000/api/notes/${id}`, {
+      const res = await fetch(`${API_BASE}/api/notes/${id}`, {
         method: 'DELETE'
       });
       if (res.ok) {
@@ -378,7 +381,7 @@ function App() {
     if (!activeNoteId || !noteContent.trim()) return;
     setIsEnhancingNote(true);
     try {
-      const res = await fetch('http://localhost:3000/api/notes/enhance', {
+      const res = await fetch(`${API_BASE}/api/notes/enhance`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title: noteTitle, content: noteContent })
@@ -388,7 +391,7 @@ function App() {
         if (data.success) {
           setNoteContent(data.enhancedContent);
           // Auto-save the enhanced content immediately in the DB
-          const saveRes = await fetch('http://localhost:3000/api/notes', {
+          const saveRes = await fetch(`${API_BASE}/api/notes`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ id: activeNoteId, title: noteTitle, content: data.enhancedContent })
@@ -422,7 +425,7 @@ function App() {
     setSelectedQuizOption('');
 
     try {
-      const res = await fetch('http://localhost:3000/api/notes/generate-quiz', {
+      const res = await fetch(`${API_BASE}/api/notes/generate-quiz`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ content, questionCount: parseInt(quizQuestionCount, 10) })
@@ -487,7 +490,7 @@ function App() {
     setIsGenerating(true);
 
     try {
-      const response = await fetch('http://localhost:3000/api/generate-roadmap', {
+      const response = await fetch(`${API_BASE}/api/generate-roadmap`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -552,7 +555,7 @@ function App() {
     setIsChatLoading(true);
 
     try {
-      const res = await fetch('http://localhost:3000/api/chat', {
+      const res = await fetch(`${API_BASE}/api/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: userMsg.text })
@@ -600,7 +603,7 @@ function App() {
     formData.append('targetJobDescription', targetJobDescription);
 
     try {
-      const response = await fetch('http://localhost:3000/api/analyze-resume', {
+      const response = await fetch(`${API_BASE}/api/analyze-resume`, {
         method: 'POST',
         body: formData
       });
@@ -634,7 +637,7 @@ function App() {
     setUserAnswer('');
 
     try {
-      const qRes = await fetch('http://localhost:3000/api/generate-interview-questions', {
+      const qRes = await fetch(`${API_BASE}/api/generate-interview-questions`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -666,7 +669,7 @@ function App() {
     setGradingResult(null);
 
     try {
-      const response = await fetch('http://localhost:3000/api/grade-interview-answer', {
+      const response = await fetch(`${API_BASE}/api/grade-interview-answer`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
