@@ -1,8 +1,7 @@
-import 
-const API_BASE = import.meta.env.VITE_API_URL || `${API_BASE}`;
-
-React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Mail, Phone, Lock, ChevronRight, Activity, Target, BookOpen, Settings, LogOut, CheckCircle2, Circle, ArrowRight, MessageSquare, Send, X, Compass, Award, Flame, Search, Loader2, Star, HelpCircle, TrendingUp, Sparkles, Zap, Globe, Shield, Heart, User, Camera, Timer, PenSquare, BrainCircuit, Download } from 'lucide-react';
+
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
